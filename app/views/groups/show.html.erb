@@ -1,0 +1,24 @@
+<!-- app/views/groups/show.html.erb -->
+<h1><%= @group.name %></h1>
+<p><%= @group.description %></p>
+
+<h2>Posts</h2>
+<%= form_with model: [@group, Post.new], local: true do |form| %>
+  <div>
+    <%= form.text_area :content %>
+    <%= form.submit 'Post' %>
+  </div>
+<% end %>
+
+<ul>
+  <% @posts.each do |post| %>
+    <li>
+      <%= link_to post.content, post_path(post) %>
+      - <%= post.user.email %>
+    </li>
+  <% end %>
+</ul>
+
+<%= paginate @posts %>
+
+

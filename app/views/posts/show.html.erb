@@ -1,0 +1,35 @@
+<h1>Post by <%= @post.user.email %></h1>
+<p><%= @post.content %></p>
+
+<h2>Likes</h2>
+<% if @post.likes.find_by(user: current_user) %>
+  <%= form_with(url: post_like_path(@post, @post.likes.find_by(user: current_user)), method: :delete, data: { turbo_frame: 'form-target', turbo_method: :delete, confirm: 'Are you sure?' }) do %>
+    <%= submit_tag 'Unlike' %>
+  <% end %>
+<% else %>
+  <%= form_with(url: post_likes_path(@post), method: :post, data: { turbo_frame: 'form-target' }) do %>
+    <%= submit_tag 'Like', data: { turbo_method: :post } %>
+  <% end %>
+<% end %>
+<span><%= pluralize(@post.likes.count, 'like') %></span>
+
+
+
+<h2>Comments</h2>
+<%= form_with model: [@post, Comment.new], local: true do |form| %>
+  <div>
+    <%= form.text_area :content %>
+    <%= form.submit 'Comment' %>
+  </div>
+<% end %>
+
+<ul>
+  <% @comments.each do |comment| %>
+    <li>
+      <%= comment.content %>
+      - <%= comment.user.email %>
+    </li>
+  <% end %>
+</ul>
+
+<%= paginate @comments %>

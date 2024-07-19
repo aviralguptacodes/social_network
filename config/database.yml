@@ -1,0 +1,19 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  pool: 5
+
+development:
+  <<: *default
+  username: postgres
+  password: postgres
+  host: localhost
+  database: social_network
+
+production:
+  <<: *default
+  username: postgres
+  password: postgres
+  host: localhost
+  database: social_network_production 
+    
